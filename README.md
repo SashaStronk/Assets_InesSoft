@@ -82,3 +82,30 @@ Constructor-based DI is accomplished by the container invoking a constructor wit
         }
         // business logic that actually uses the injected MovieFinder is omitted...
     }
+
+# Почему коллекции необходимо создавать таким образом:
+List list = new Linkedlist();
+Почему нежелательно сразу писать LinkedList?
+
+Это важный прием написания хорошего ООП кода. Идея в том что так ваш код становится менее зависим от конкретных реализаций используемых модулей. В тот же самый интерфейс List можно записать LinkedList, ArrayList, CopyOnWriteArrayList и т.д.
+
+При этом, объявив список подобным образом, мы можем быть уверены что если вдруг появится необходимость подменить реализацию с LinkedList на ArrayList, то нам придется изменить только строчку с вызовом конструктора. Например LinkedList, в отличии от ArrayList, помимо интерфейса List имплементирует ещё Queue(очередь) в котором есть метод push.
+
+    List list = new LinkedList();
+    LinkedList linkedList = new LinkedList();
+    ArrayList arrayList = new ArrayList();
+    
+    list.add("ok");
+    linkedList.add("ok");
+    arrayList.add("ok");
+    
+    list.push("error"); //ошибка при компиляции, у интерфейса List нет такого метода.
+    linkedList.push("Ok");
+    arrayList.push("error"); //ошибка при компиляции, ArrayList не имплементирует Queue
+    
+    
+В примере выше, даже не смотря на то что в list у нас хранится экземпляр LinkedList, мы не можем вызвать специфичные для него методы. Интерфейс List вынуждает нас пользоваться только методами списка, а не очереди или чего-либо ещё.
+
+Использование интерфейса вместо реализации не столь важно когда коллекция(или другой объект) создаётся и используется внутри одного метода, но важно если она каким-либо образом передаётся в другие модули.
+
+Подробнее на эту тему читайте про SOLID.
