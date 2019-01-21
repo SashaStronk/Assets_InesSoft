@@ -67,3 +67,18 @@ Vuex — паттерн управления состоянием + библио
    Библиотека Vuetify даёт разработчикам возможности по созданию пользовательских интерфейсов с использованием принципов Google Material Design.
 
 
+# Constructor-based dependency injection
+
+Constructor-based DI is accomplished by the container invoking a constructor with a number of arguments, each representing a dependency. Calling a static factory method with specific arguments to construct the bean is nearly equivalent, and this discussion treats arguments to a constructor and to a static factory method similarly. The following example shows a class that can only be dependency-injected with constructor injection. Notice that there is nothing special about this class, it is a POJO that has no dependencies on container specific interfaces, base classes or annotations.
+
+    public class SimpleMovieLister {
+    
+        // the SimpleMovieLister has a dependency on a MovieFinder
+        private MovieFinder movieFinder;
+    
+        // a constructor so that the Spring container can inject a MovieFinder
+        public SimpleMovieLister(MovieFinder movieFinder) {
+            this.movieFinder = movieFinder;
+        }
+        // business logic that actually uses the injected MovieFinder is omitted...
+    }
